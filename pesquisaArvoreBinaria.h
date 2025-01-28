@@ -6,6 +6,6 @@
 using namespace std;
 
 bool pesquisaArvoreBinaria(int, FILE*);
+int pesquisa_Arvore_Binaria(string, int);
 
 #endif
-

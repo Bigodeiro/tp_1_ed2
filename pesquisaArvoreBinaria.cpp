@@ -33,11 +33,9 @@ bool pesquisaArvoreBinaria(int chave, FILE *arqEntrada) {
 
 }
 
-int main(int argc, char* argv[]) {
-    FILE* arqEntrada = fopen(argv[1], "rb");
-    cout << "Digite a chave para busca: \n";
-    int c;
-    cin >> c;
+int pesquisa_Arvore_Binaria(string arq_path, int c) {
+    FILE* arqEntrada = fopen(arq_path.c_str(), "rb");
+    
 
     auto tempoInicio = high_resolution_clock::now();
 
@@ -49,6 +47,5 @@ int main(int argc, char* argv[]) {
     auto tempoFim = high_resolution_clock::now();
     auto tempoExecucao = duration_cast<milliseconds>(tempoFim - tempoInicio);
     cout << "\nTempo de pesquisa: " << tempoExecucao.count() << "ms\n";
-    return 0;
-    
+    return 0;   
 }

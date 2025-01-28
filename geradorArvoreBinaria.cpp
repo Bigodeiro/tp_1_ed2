@@ -1,23 +1,16 @@
 #include <iostream>
 #include <stdlib.h>
+#include <string>
+
+#include "tipoRegistro.h"
+#include "geradorArvoreBinaria.h"
 
 using namespace std;
 
-typedef struct {
-    int chave;
-    long int dado1;
-    char dado2[5000];
-} TipoRegistro;
-
-typedef struct {
-    TipoRegistro registro;
-    long int filho_dir;
-    long int filho_esq;
-} TipoNo;
 
 bool adicionaNo(FILE *arq_saida, TipoNo *no, TipoNo *no_pai, bool insere, int *numero_de_nos);
 
-int main(int argc, char *argv[]) {
+int gera_Arvore_Binaria(string arq_path) {
     
     FILE *arq_entrada, *arq_saida;
     TipoRegistro *registro;
@@ -29,7 +22,9 @@ int main(int argc, char *argv[]) {
     no_pai = (TipoNo*) malloc(sizeof(TipoNo));
     registro = (TipoRegistro*) malloc(sizeof(TipoRegistro));
 
-    if( (arq_entrada = fopen(argv[1], "rb")) == NULL ) {
+    
+
+    if( (arq_entrada = fopen(arq_path.c_str(), "rb")) == NULL ) {
         cout << "Erro para abrir o arquivo\n"; 
         return 1;
     }
@@ -63,6 +58,7 @@ int main(int argc, char *argv[]) {
 
     cout << "Numero de nos: "<< numero_de_nos << endl;
 
+    return 0;
 }
 
 bool adicionaNo(FILE *arq_saida, TipoNo *no, TipoNo *no_pai, bool insere, int *numero_de_nos) {

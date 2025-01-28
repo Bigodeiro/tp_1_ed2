@@ -1,9 +1,17 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+
 #include "psi.h"
+#include "pesquisaArvoreBinaria.h"
+#include "geradorDeArquivo.h"
+#include "tipoRegistro.h"
+#include "geradorArvoreBinaria.h"
 
 using namespace std;
+/*
+g++ pesquisa.cpp psi.cpp pesquisaArvoreBinaria.cpp geradorDeArquivo.cpp geradorArvoreBinaria.cpp -o pesquisa
+*/
 
 // Argumentos: <metodo> <qntd_registros> <ordenacao_arquivo> <chave> [-P]
 
@@ -24,46 +32,45 @@ using namespace std;
 
 // [-P]: apresenta as chaves de pesquisa dos registros do arquivo considerado na tela
 
-int main(int argc, char *argv[]) {
 
+int main(int argc, char *argv[]) {
+    if (argc < 5) {
+        cerr << "Uso: " << argv[0] << " <metodo> <qntd_registros> <ordenacao_arquivo> <chave> [-P]" << endl;
+        return 1;
+    }
 
     int qntd_registros = stoi(argv[2]);
-
-    // De 0 a 100
-    int chaves_alestorias[20] = {0, 5, 10, 15, 20, 25, 30, 35, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100};
-
-    // Transformar de acordo com o numero de registros que o usuario deseja
-    for (int i = 0; i < 20; i++) {
-        chaves_alestorias[i] = chaves_alestorias[i] * (qntd_registros / 100);
-    }
-
+    int ordenacao = stoi(argv[3]);
     int chave_desejada = stoi(argv[4]);
 
-    string arq_path;
+    string arq_path = "arquivo.bin";
+    FILE *arq = fopen(arq_path.c_str(), "wb");
 
-    /* selecao da ordenacao do arquivo */
-    switch (stoi(argv[3])) {
-    case 1: //registrosAscendente.bin
-        arq_path = "registrosAscendente.bin";
+    cout << "Gerando arquivo..." << endl;
+    switch (ordenacao) {
+    case 1:
+        geraArqAscendente(qntd_registros, arq);
         break;
-    case 2: //registrosDecrescente.bin
-        arq_path = "registrosDecrescente.bin";
+    case 2:
+        geraArqDecrescente(qntd_registros, arq);
         break;
-    case 3: //registrosDesordenados.bin
-        arq_path = "registrosDesordenados.bin";
-        break;  
+    case 3:
+        geraArqDesordenado(qntd_registros, arq);
+        break;
     default:
-        break;
+        cerr << "Ordenacao invalida." << endl;
+        return 1;
     }
 
-
+    cout << "Pesquisando chave " << chave_desejada << " no arquivo de " << qntd_registros << " registros..." << endl; 
     /* selecao do metodo de pesquisa */
     switch (stoi(argv[1])) {
     case 1:
         psi(arq_path.c_str(), chave_desejada);
         break;
     case 2:
-        /* executa ARVORE BINÁRIA DE PESQUISA EM MEMORIA EXTERNA */
+        gera_Arvore_Binaria(arq_path);
+        pesquisa_Arvore_Binaria("registros_arvore_binaria.bin", chave_desejada);
         break;
     case 3:
         /* executa ARVORE B */
@@ -72,11 +79,13 @@ int main(int argc, char *argv[]) {
         /* executa ARVORE B* */
         break;    
     default:
-        break;
+        cerr << "Metodo de pesquisa invalido." << endl;
+        return 1;
     }
 
-    if(argc > 5 && string(argv[5]) == "-P")
+    if(argc > 5 && string(argv[5]) == "-P") {
         /* chaves de pesquisa dos registros do arquivo considerado sao apresentadas na tela */
-    return 0;
+    }
 
+    return 0;
 }

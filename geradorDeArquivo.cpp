@@ -1,16 +1,14 @@
 #include <iostream>
 #include <string.h>
 #include <math.h>
+#include <cstdlib> // Para usar system()
+#include "geradorDeArquivo.h"
+#include "tipoRegistro.h" // Incluir a definição de TipoRegistro
+
 using namespace std;
 
-typedef struct {
-    int chave;
-    long int dado1;
-    char dado2[5000];
-} TipoRegistro;
 
 int geraArqAscendente(int N, FILE *arqEscrita) {
-
     for(int i = 0; i < N; i++) {
         TipoRegistro reg;
         reg.chave = i+1;
@@ -20,11 +18,9 @@ int geraArqAscendente(int N, FILE *arqEscrita) {
     fclose(arqEscrita);
     cout << "Arquivo ascendente criado!\n";
     return 0;
-
 }
 
 int geraArqDecrescente(int N, FILE *arqEscrita) {
-
     for(int i = N; i > 0; i--) {
         TipoRegistro reg;
         reg.chave = i;
@@ -34,11 +30,9 @@ int geraArqDecrescente(int N, FILE *arqEscrita) {
     fclose(arqEscrita);
     cout << "Arquivo decrescente criado!\n";
     return 0;
-
 }
 
 int geraArqDesordenado(int N, FILE *arqEscrita) {
-
     TipoRegistro *registros = (TipoRegistro*)malloc(N * sizeof(TipoRegistro));
 
     for(int i = 0; i < N; i++) {
@@ -61,43 +55,4 @@ int geraArqDesordenado(int N, FILE *arqEscrita) {
     fclose(arqEscrita);
     cout << "Arquivo desordenado criado!\n";
     return 0;
-
 }
-
-int main (int argc, char *argv[]) {
-
-    if(argc < 2)
-        return 1;
-
-    string arqTipo = string(argv[1]);
-    int N;
-
-    cout << "Digite o numero de registros: ";
-    cin >> N;
-
-    FILE *arqEscrita;
-    
-    if(arqTipo == "-a") {
-
-        if ( (arqEscrita = fopen("registrosAscendente.bin", "wb")) == NULL ) 
-            cout << "\nErro na criacao do arquivo.\n";
-        else
-            geraArqAscendente(N, arqEscrita);
-
-    } else if(arqTipo == "-d") {
-
-        if ( (arqEscrita = fopen("registrosDecrescente.bin", "wb")) == NULL ) 
-            cout << "\nErro na criacao do arquivo.\n";
-        else
-            geraArqDecrescente(N, arqEscrita);
-
-    } else if(arqTipo == "-r") {
-
-        if ( (arqEscrita = fopen("registrosDesordenados.bin", "wb")) == NULL ) 
-            cout << "\nErro na criacao do arquivo.\n";
-        else
-            geraArqDesordenado(N, arqEscrita);
-    }
-    return 1;
-}
-

@@ -3,6 +3,8 @@
 using namespace std;
 using namespace chrono;
 
+#include "tipoRegistro.h"
+
 // Função de busca binária
 bool buscaBinaria(TipoRegistro pagina[], int qtdItens, int chave, int pEsq, int pDir, int pMeio, TipoRegistro *registro, int *cont) {
     (*cont)++;
